@@ -1,0 +1,22 @@
+/* Cookie and consent banners */
+#onetrust-banner-sdk,#onetrust-consent-sdk,.onetrust-pc-dark-filter,#didomi-host,#didomi-popup,.didomi-popup-backdrop,
+#CybotCookiebotDialog,#CybotCookiebotDialogBodyUnderlay,.qc-cmp2-container,#qc-cmp2-container,#usercentrics-root,
+#usercentrics-cmp-ui,[id^="sp_message_container"],.fc-consent-root,.fc-dialog-overlay,#truste-consent-track,
+.truste_overlay,.truste_box_overlay,#cmpbox,#cmpbox2,.cmpboxBG,#cookie-law-info-bar,.cookie-notice-container,
+#cookie-notice,#cookieConsent,#cookie-consent,.cookie-consent,.cookie-banner,#cookie-banner,.cookies-banner,
+#cookies-banner,.cc-window,.cc-banner,.cc-overlay,#gdpr-consent,.gdpr-banner,#gdpr-banner,.gdpr-consent,
+#axeptio_overlay,#axeptio_main_button,#tarteaucitronRoot,#tarteaucitronAlertBig,#tarteaucitronBack,
+.iubenda-cs-container,#iubenda-cs-banner,.cky-consent-container,.cky-overlay,#moove_gdpr_cookie_info_bar,
+.klaro,.cookiefirst-root,#termly-code-snippet-support,.osano-cm-window,#hs-eu-cookie-confirmation,
+#consent-banner,.consent-banner,#consentBanner,.privacy-banner,#privacy-banner,.cmp-root,#cmp-container,
+.sd-cmp,[class*="sd-cmp-"],#sd-cmp,.pmConsentWall,#pmConsentWall,.gravitoCMP,#gravitoCMP-container
+{display:none!important}
+/* Common ad slots */
+ins.adsbygoogle,.adsbygoogle,[id^="google_ads_iframe"],[id^="div-gpt-ad"],.ad-slot,.ad-container,.ad-wrapper,
+.advertisement,.advert,.ad-banner,.banner-ad,.sponsored-content,[data-ad-slot],[data-google-query-id],
+.taboola,[id^="taboola-"],.trc_rbox_container,.OUTBRAIN,[data-widget-id^="AR_"],.ob-widget,
+.bloc-pub,.dfp-ad,.ad-leaderboard,.ad-mpu,.ad-sidebar,.teads-inread,.ligatus
+{display:none!important}
+/* Pages that lock scrolling behind a consent wall */
+html.didomi-popup-open,body.didomi-popup-open,body.sp-message-open,html.sp-message-open,body.qc-cmp-ui-showing,
+body.modal-open-cmp,body.no-scroll-cmp{overflow:auto!important;position:static!important}
