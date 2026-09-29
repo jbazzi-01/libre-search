@@ -14,6 +14,18 @@ class LibreApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        val previous = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { t, e ->
+            try {
+                java.io.File(filesDir, "last_crash.txt").writeText(
+                    "Libre Search ${BuildConfig.VERSION_NAME}\n" +
+                        "Android ${android.os.Build.VERSION.RELEASE} (${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL})\n" +
+                        "Thread: ${t.name}\n\n" + e.stackTraceToString().take(12000)
+                )
+            } catch (_: Throwable) {
+            }
+            previous?.uncaughtException(t, e)
+        }
         Prefs.init(this)
         Http.init(this)
         LibraryStore.init(this)

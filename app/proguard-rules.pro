@@ -1,4 +1,5 @@
 -dontobfuscate
+-keepattributes SourceFile,LineNumberTable
 -ignorewarnings
 
 # NewPipe extractor (uses reflection in places)

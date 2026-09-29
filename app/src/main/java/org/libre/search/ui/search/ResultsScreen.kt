@@ -48,7 +48,15 @@ val resultTabs = listOf(
 fun ResultsScreen(s: ResultsState) {
     val c = LocalLibre.current
     val ctx = LocalContext.current
-    LaunchedEffect(s.tab) { s.load(ctx) }
+    LaunchedEffect(s.tab) {
+        try {
+            s.load(ctx)
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
+        } catch (e: Throwable) {
+            s.failed(e)
+        }
+    }
     Column(Modifier.fillMaxSize().background(c.bg).statusBarsPadding()) {
         Row(Modifier.fillMaxWidth().padding(end = 12.dp, top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = { Nav.pop() }) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null, tint = c.text) }

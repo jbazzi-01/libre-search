@@ -21,6 +21,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.LibraryBooks
 import androidx.compose.material.icons.filled.Home
@@ -136,6 +141,8 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        CrashReportDialog()
+
         BackHandler(enabled = fullscreen != null) { Tabs.exitFullscreen() }
         BackHandler(enabled = fullscreen == null && Nav.stack.size > 1 && screen != Screen.Browser) { Nav.pop() }
 
@@ -184,6 +191,41 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    /** If the app crashed last time, shows the report so it can be copied and sent. */
+    @Composable
+    private fun CrashReportDialog() {
+        val file = java.io.File(filesDir, "last_crash.txt")
+        var report by androidx.compose.runtime.remember {
+            androidx.compose.runtime.mutableStateOf(if (file.exists()) try { file.readText() } catch (_: Exception) { null } else null)
+        }
+        val text = report ?: return
+        fun close() { file.delete(); report = null }
+        androidx.compose.material3.AlertDialog(
+            onDismissRequest = { close() },
+            title = { Text("The app closed unexpectedly") },
+            text = {
+                Column {
+                    Text("Copy this report and send it to Claude so the problem can be fixed.")
+                    androidx.compose.foundation.layout.Spacer(Modifier.height(androidx.compose.ui.unit.Dp(10f)))
+                    Text(
+                        text.take(3000),
+                        fontSize = androidx.compose.ui.unit.TextUnit(11f, androidx.compose.ui.unit.TextUnitType.Sp),
+                        modifier = Modifier.heightIn(max = androidx.compose.ui.unit.Dp(320f)).verticalScroll(androidx.compose.foundation.rememberScrollState())
+                    )
+                }
+            },
+            confirmButton = {
+                androidx.compose.material3.TextButton(onClick = {
+                    val cm = getSystemService(android.content.ClipboardManager::class.java)
+                    cm.setPrimaryClip(android.content.ClipData.newPlainText("crash report", text))
+                    Toast.makeText(this, "Report copied", Toast.LENGTH_SHORT).show()
+                    close()
+                }) { Text("Copy report") }
+            },
+            dismissButton = { androidx.compose.material3.TextButton(onClick = { close() }) { Text("Dismiss") } }
+        )
     }
 
     @Composable

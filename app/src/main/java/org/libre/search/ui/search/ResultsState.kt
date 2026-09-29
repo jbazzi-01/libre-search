@@ -45,6 +45,19 @@ class ResultsState(val query: String, initialTab: String) {
     var placesHere by mutableStateOf<Place?>(null)
     var placesError by mutableStateOf<String?>(null)
 
+    /** Shows an error in the current tab instead of letting a problem close the app. */
+    fun failed(e: Throwable) {
+        val msg = "Something went wrong: " + (e.message ?: e.javaClass.simpleName)
+        when (tab) {
+            "all" -> { allError = msg; if (all == null) all = AllResults(query, webError = msg) }
+            "images" -> { imagesError = msg; if (images == null) images = emptyList() }
+            "videos" -> { videosError = msg; if (videos == null) videos = emptyList() }
+            "shopping" -> { shoppingError = msg; if (shopping == null) shopping = WebPage() }
+            "forums" -> { forumsError = msg; if (forums == null) forums = WebPage() }
+            "places" -> { placesError = msg; if (places == null) places = emptyList() }
+        }
+    }
+
     suspend fun load(ctx: Context) {
         when (tab) {
             "all" -> if (all == null) {
