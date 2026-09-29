@@ -6,7 +6,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 object Text {
-    private val diacritics = Regex("\\p{InCombiningDiacriticalMarks}+")
+    private val diacritics = Regex("\\p{Mn}+")
 
     fun normalize(s: String): String =
         Normalizer.normalize(s.lowercase(), Normalizer.Form.NFD)

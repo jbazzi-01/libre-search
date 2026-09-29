@@ -10,11 +10,11 @@ import kotlin.math.abs
 object QueryIntent {
 
     private val weatherWords = Regex(
-        "(?U)\\b(weather|meteo|météo|forecast|previsions?|prévisions?|temperature|température|quel temps|what's the weather|will it rain|va-t-il pleuvoir)\\b",
+        "(?<![\\p{L}\\p{N}])(weather|meteo|météo|forecast|previsions?|prévisions?|temperature|température|quel temps|what's the weather|will it rain|va-t-il pleuvoir)(?![\\p{L}\\p{N}])",
         RegexOption.IGNORE_CASE
     )
     private val weatherFiller = Regex(
-        "(?U)\\b(in|at|for|a|à|au|aux|de|du|des|la|le|les|today|tonight|tomorrow|this|week|weekend|aujourd'hui|aujourdhui|demain|ce|cette|semaine|soir|now|maintenant|current|actuelle|what's|the|is|quel|temps|fait|il|va|t|pleuvoir|rain|will|it)\\b",
+        "(?<![\\p{L}\\p{N}])(in|at|for|a|à|au|aux|de|du|des|la|le|les|today|tonight|tomorrow|this|week|weekend|aujourd'hui|aujourdhui|demain|ce|cette|semaine|soir|now|maintenant|current|actuelle|what's|the|is|quel|temps|fait|il|va|t|pleuvoir|rain|will|it)(?![\\p{L}\\p{N}])",
         RegexOption.IGNORE_CASE
     )
 
@@ -26,7 +26,7 @@ object QueryIntent {
     }
 
     private val nearWords = Regex(
-        "(?U)\\b(near me|nearby|near here|around me|close to me|près de moi|pres de moi|autour de moi|à proximité|a proximite|proche|dans le coin|open now|ouvert maintenant)\\b",
+        "(?<![\\p{L}\\p{N}])(near me|nearby|near here|around me|close to me|près de moi|pres de moi|autour de moi|à proximité|a proximite|proche|dans le coin|open now|ouvert maintenant)(?![\\p{L}\\p{N}])",
         RegexOption.IGNORE_CASE
     )
 
@@ -76,13 +76,13 @@ object QueryIntent {
         "glacier|ice cream|glace" to """["amenity"="ice_cream"]""",
         "opticien|optician" to """["shop"="optician"]""",
         "friperie|second hand|thrift|recyclerie|ressourcerie" to """["shop"~"^(second_hand|charity)$"]""",
-    ).map { (k, v) -> Regex("(?U)\\b($k)\\b", RegexOption.IGNORE_CASE) to v }
+    ).map { (k, v) -> Regex("(?<![\\p{L}\\p{N}])($k)(?![\\p{L}\\p{N}])", RegexOption.IGNORE_CASE) to v }
 
     data class Local(val tag: String?, val nameQuery: String?, val explicit: Boolean)
 
     /** Returns a local-search plan, or null when the query clearly isn't about places. */
     private val howTo = Regex(
-        "(?U)\\b(how|recipe|recette|comment|history|histoire|what|why|pourquoi|definition|définition|meaning|wiki|song|chanson|lyrics)\\b",
+        "(?<![\\p{L}\\p{N}])(how|recipe|recette|comment|history|histoire|what|why|pourquoi|definition|définition|meaning|wiki|song|chanson|lyrics)(?![\\p{L}\\p{N}])",
         RegexOption.IGNORE_CASE
     )
 
@@ -99,7 +99,7 @@ object QueryIntent {
     }
 
     private val screenWords = Regex(
-        "(?U)\\b(film|movie|cast|casting|acteurs?|actors?|actrices?|director|réalisateur|realisateur|series|série|serie|saison|season|trailer|bande annonce|streaming|showtimes|séances)\\b",
+        "(?<![\\p{L}\\p{N}])(film|movie|cast|casting|acteurs?|actors?|actrices?|director|réalisateur|realisateur|series|série|serie|saison|season|trailer|bande annonce|streaming|showtimes|séances)(?![\\p{L}\\p{N}])",
         RegexOption.IGNORE_CASE
     )
 
@@ -107,7 +107,7 @@ object QueryIntent {
     fun stripScreenWords(q: String) = q.replace(screenWords, " ").replace(Regex("\\s+"), " ").trim()
 
     private val questionStart = Regex(
-        "^(how|why|what is the best|comment|pourquoi|est-ce que|can i|should i|where to buy|best|meilleur|top \\d+|vs|versus)\\b",
+        "^(how|why|what is the best|comment|pourquoi|est-ce que|can i|should i|where to buy|best|meilleur|top \\d+|vs|versus)(?![\\p{L}\\p{N}])",
         RegexOption.IGNORE_CASE
     )
 
@@ -120,7 +120,7 @@ object QueryIntent {
     }
 
     private val shopWords = Regex(
-        "(?U)\\b(buy|acheter|price|prix|cheap|pas cher|deal|promo|review|avis|test|comparatif|best|meilleur)\\b",
+        "(?<![\\p{L}\\p{N}])(buy|acheter|price|prix|cheap|pas cher|deal|promo|review|avis|test|comparatif|best|meilleur)(?![\\p{L}\\p{N}])",
         RegexOption.IGNORE_CASE
     )
 
